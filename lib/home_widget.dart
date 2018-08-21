@@ -28,6 +28,12 @@ class _HomeState extends State<Home> {
             fontSize: 28.0,
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

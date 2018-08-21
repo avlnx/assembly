@@ -9,7 +9,7 @@ class PlaceholderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text(text),
+        child: Text(text, style: TextStyle(fontSize: 32.0),),
       ),
     );
   }
