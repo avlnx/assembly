@@ -55,3 +55,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+  fonts:
+    - family: Kaushan Script
+      fonts:
+        - asset: assets/fonts/KaushanScript-Regular.ttf
