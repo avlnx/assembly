@@ -7,3 +7,6 @@
 build/
 
 .flutter-plugins
+
+# Ignore IDE files
+.idea
