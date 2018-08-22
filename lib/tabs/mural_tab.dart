@@ -13,10 +13,14 @@ class MuralTab extends StatefulWidget {
 }
 
 class _MuralTabState extends State<MuralTab> {
+  final _posts = <MuralItem>[];
+
   @override
   Widget build(BuildContext context) {
     final items = List<MuralItem>.generate(
-        3, (i) => MuralItem("Edital #$i", "Texto do edital #$i"));
+        31, (i) => MuralItem("Edital #${i+1}", "Texto do edital #${i+1}"));
+//    _posts.addAll(items);
+
     return Column(
       children: <Widget>[
         Flexible(
@@ -24,25 +28,18 @@ class _MuralTabState extends State<MuralTab> {
           child: ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
-              final MuralItem item = items[index];
+              int numOfItemsPerFetch = 10;
 
-              return Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                child: Card(
-                  child: ListTile(
-                    title: Center(
-                        child: Text(
-                      item.title,
-                      style: TextStyle(
-                        fontSize: 24.0,
-                      ),
-                    )),
-                    subtitle: Text(item.body.length > 50
-                        ? item.body.substring(0, 50)
-                        : item.body),
-                  ),
-                ),
-              );
+              if (index >= _posts.length) {
+                // we reached the end of the list take 10 more
+                _posts.addAll(items.take(numOfItemsPerFetch));
+                // get rid of the items already added to the _posts array
+                items.length >= numOfItemsPerFetch
+                    ? items.removeRange(0, numOfItemsPerFetch)
+                    : items.clear();
+              }
+
+              return _buildPostRow(_posts[index]);
             },
             padding: EdgeInsets.all(20.0),
           ),
@@ -55,6 +52,25 @@ class _MuralTabState extends State<MuralTab> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPostRow(MuralItem item) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+      child: Card(
+        child: ListTile(
+          title: Center(
+              child: Text(
+            item.title,
+            style: TextStyle(
+              fontSize: 24.0,
+            ),
+          )),
+          subtitle: Text(
+              item.body.length > 50 ? item.body.substring(0, 50) : item.body),
+        ),
+      ),
     );
   }
 }
