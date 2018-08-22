@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
         title: Text(
           'Desenrola',
           style: TextStyle(
@@ -49,6 +50,7 @@ class _HomeState extends State<Home> {
         onTap: onTabTapped,
         currentIndex: _currentIndex, // will be set when a new tab is tapped
         type: BottomNavigationBarType.fixed,
+        fixedColor: Colors.black,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.assignment_late),

@@ -11,6 +11,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         primaryColor: Colors.deepPurple,
+        scaffoldBackgroundColor: Colors.deepPurple,
       ),
       home: Home(),
     );
