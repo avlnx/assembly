@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import '../screens/result_details_screen.dart';
 
 class ResultsTab extends StatefulWidget {
   @override
@@ -14,7 +15,6 @@ class Result {
 }
 
 class _ResultsTabState extends State<ResultsTab> {
-
   final _results = <Result>[];
 
   @override
@@ -22,10 +22,8 @@ class _ResultsTabState extends State<ResultsTab> {
     // implement initState
     super.initState();
     // Create mock data
-    _results.addAll(List<Result>.generate(
-        50,
-            (i) =>
-            Result("Apuração #${Random().nextInt(1000)}", DateTime.now())));
+    _results.addAll(List<Result>.generate(50,
+        (i) => Result("Apuração #${Random().nextInt(1000)}", DateTime.now())));
   }
 
   @override
@@ -35,8 +33,19 @@ class _ResultsTabState extends State<ResultsTab> {
       itemBuilder: (context, index) {
         return Card(
           child: ListTile(
-            title: Text(_results[index].title, style: TextStyle(fontSize: 18.0),),
+            title: Text(
+              _results[index].title,
+              style: TextStyle(fontSize: 18.0),
+            ),
             subtitle: Text(_results[index].date.toLocal().toString()),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultDetailsScreen(_results[index]),
+                ),
+              );
+            },
           ),
           margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
         );
