@@ -24,7 +24,7 @@ class _MuralTabState extends State<MuralTab> {
     super.initState();
     // Create mock data
     _allItems.addAll(List<MuralItem>.generate(
-    11,
+    5,
     (i) =>
     MuralItem("Edital #${Random().nextInt(1000)}", "Texto do edital", i % 3 != 0)));
   }
@@ -74,6 +74,25 @@ class _MuralTabState extends State<MuralTab> {
             ),
           ),
           onTap: () {
+            showModalBottomSheet<void>(context: context, builder: (BuildContext context) {
+              return Container(
+                  child: Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(item.title,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 24.0
+                              )
+                          ),
+                          Text(item.body),
+                        ],
+                      ),
+                  )
+              );
+            });
             setState(() {
               int i = _allItems.indexOf(item);
               if (!item.read) {
