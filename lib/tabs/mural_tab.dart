@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MuralItem {
-  final String title;
-  final String body;
-  final bool read;
+  String title;
+  String body;
+  bool read;
 
   MuralItem(this.title, this.body, this.read);
 }
@@ -14,42 +14,63 @@ class MuralTab extends StatefulWidget {
 }
 
 class _MuralTabState extends State<MuralTab> {
-  final _posts = <MuralItem>[];
+  final _postsAddedToInterface = <MuralItem>[];
+  final _readItems = <MuralItem>[];
+  final _unreadItems = <MuralItem>[];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Create mock data
+    _readItems.addAll(List<MuralItem>.generate(
+    11,
+    (i) =>
+    MuralItem("Edital #${i+1}", "Texto do edital #${i+1}", true)));
+    _unreadItems.addAll(List<MuralItem>.generate(
+    11,
+    (i) =>
+    MuralItem("Edital #${i+12}", "Texto do edital #${i+12}", false)));
+  }
 
   @override
   Widget build(BuildContext context) {
-    final items = List<MuralItem>.generate(
-        31, (i) => MuralItem("Edital #${i+1}", "Texto do edital #${i+1}", i % 2 == 0));
-
-    // Sort items by read status
-    items.sort((a, b) => a.read.compareTo(b.read));
-
+    List<MuralItem> _tempAllItems = [];
+    _tempAllItems.addAll(_unreadItems);
+    _tempAllItems.addAll(_readItems);
     return ListView.builder(
-      itemCount: items.length,
+      itemCount: _tempAllItems.length,
       itemBuilder: (context, index) {
         int numOfItemsPerFetch = 10;
 
-        if (index >= _posts.length) {
+        if (index >= _postsAddedToInterface.length) {
           // we reached the end of the list take 10 more
-          _posts.addAll(items.take(numOfItemsPerFetch));
+          _postsAddedToInterface.addAll(_tempAllItems.take(numOfItemsPerFetch));
           // get rid of the items already added to the _posts array
-          items.length >= numOfItemsPerFetch
-              ? items.removeRange(0, numOfItemsPerFetch)
-              : items.clear();
+          _tempAllItems.length >= numOfItemsPerFetch
+              ? _tempAllItems.removeRange(0, numOfItemsPerFetch)
+              : _tempAllItems.clear();
         }
 
-        return _buildPostRow(_posts[index]);
+        return _buildPostRow(_postsAddedToInterface[index]);
       },
       padding: EdgeInsets.all(20.0),
     );
   }
 
   Widget _buildPostRow(MuralItem item) {
+    IconData readIcon =
+        item.read ? Icons.chat_bubble_outline : Icons.chat_bubble;
+    Color readIconColor = item.read ? Colors.grey : Colors.deepOrange;
+
+    // Read?
+
+
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
       child: Card(
         child: ListTile(
-          leading: Icon(Icons.chat_bubble, color: Colors.deepOrange,),
+          leading: Icon(readIcon, color: readIconColor),
           title: Text(
             item.title,
             style: TextStyle(
@@ -58,6 +79,19 @@ class _MuralTabState extends State<MuralTab> {
           ),
           subtitle: Text(
               item.body.length > 50 ? item.body.substring(0, 50) : item.body),
+          onTap: () {
+            setState(() {
+              if (!item.read) {
+                item.read = true;
+                _readItems.add(item);
+                _unreadItems.remove(item);
+              } else {
+                item.read = false;
+                _unreadItems.add(item);
+                _readItems.remove(item);
+              }
+            });
+          },
         ),
       ),
     );
