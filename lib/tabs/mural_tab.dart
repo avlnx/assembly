@@ -73,15 +73,11 @@ class _MuralTabState extends State<MuralTab> {
               fontSize: 24.0,
             ),
           ),
-          subtitle: Text(
-              item.body.length > 50 ? item.body.substring(0, 50) : item.body),
           onTap: () {
             setState(() {
               int i = _allItems.indexOf(item);
               if (!item.read) {
                 _allItems[i].read = true;
-              } else {
-                _allItems[i].read = false;
               }
             });
           },
