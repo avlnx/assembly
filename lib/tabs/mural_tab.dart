@@ -24,7 +24,7 @@ class _MuralTabState extends State<MuralTab> {
     super.initState();
     // Create mock data
     _allItems.addAll(List<MuralItem>.generate(
-    5,
+    50,
     (i) =>
     MuralItem("Edital #${Random().nextInt(1000)}", "Texto do edital", i % 3 != 0)));
   }
