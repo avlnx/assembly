@@ -14,7 +14,6 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     MuralTab(),
-    PlaceholderWidget('Dúvidas'),
     PlaceholderWidget('Votações'),
     PlaceholderWidget('Apurações'),
   ];
@@ -55,10 +54,6 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.assignment_late),
             title: new Text('Mural'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.forum),
-            title: new Text('Dúvidas'),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_balance), title: Text('Votações')),

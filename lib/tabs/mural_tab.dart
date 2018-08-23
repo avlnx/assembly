@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class MuralItem {
   String title;
@@ -15,41 +16,39 @@ class MuralTab extends StatefulWidget {
 
 class _MuralTabState extends State<MuralTab> {
   final _postsAddedToInterface = <MuralItem>[];
-  final _readItems = <MuralItem>[];
-  final _unreadItems = <MuralItem>[];
+  final _allItems = <MuralItem>[];
 
   @override
   void initState() {
-    // TODO: implement initState
+    // implement initState
     super.initState();
     // Create mock data
-    _readItems.addAll(List<MuralItem>.generate(
+    _allItems.addAll(List<MuralItem>.generate(
     11,
     (i) =>
-    MuralItem("Edital #${i+1}", "Texto do edital #${i+1}", true)));
-    _unreadItems.addAll(List<MuralItem>.generate(
-    11,
-    (i) =>
-    MuralItem("Edital #${i+12}", "Texto do edital #${i+12}", false)));
+    MuralItem("Edital #${Random().nextInt(1000)}", "Texto do edital", i % 3 != 0)));
   }
 
   @override
   Widget build(BuildContext context) {
-    List<MuralItem> _tempAllItems = [];
-    _tempAllItems.addAll(_unreadItems);
-    _tempAllItems.addAll(_readItems);
+    // Put all unread items first in the list but keep order (date order)
+    List<MuralItem> _readItems = [];
+    List<MuralItem> _unreadItems = [];
+    for (var i = 0; i < _allItems.length; i++) {
+      _allItems[i].read ? _readItems.add(_allItems[i]) : _unreadItems.add(_allItems[i]);
+    }
+    _allItems.clear();
+    _allItems.addAll(_unreadItems);
+    _allItems.addAll(_readItems);
+
     return ListView.builder(
-      itemCount: _tempAllItems.length,
+      itemCount: _allItems.length,
       itemBuilder: (context, index) {
         int numOfItemsPerFetch = 10;
 
         if (index >= _postsAddedToInterface.length) {
-          // we reached the end of the list take 10 more
-          _postsAddedToInterface.addAll(_tempAllItems.take(numOfItemsPerFetch));
-          // get rid of the items already added to the _posts array
-          _tempAllItems.length >= numOfItemsPerFetch
-              ? _tempAllItems.removeRange(0, numOfItemsPerFetch)
-              : _tempAllItems.clear();
+          // Skip same number of already added items and add `numOfItemsPerFetch` more
+          _postsAddedToInterface.addAll(_allItems.skip(_postsAddedToInterface.length).take(numOfItemsPerFetch));
         }
 
         return _buildPostRow(_postsAddedToInterface[index]);
@@ -62,9 +61,6 @@ class _MuralTabState extends State<MuralTab> {
     IconData readIcon =
         item.read ? Icons.chat_bubble_outline : Icons.chat_bubble;
     Color readIconColor = item.read ? Colors.grey : Colors.deepOrange;
-
-    // Read?
-
 
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -81,14 +77,11 @@ class _MuralTabState extends State<MuralTab> {
               item.body.length > 50 ? item.body.substring(0, 50) : item.body),
           onTap: () {
             setState(() {
+              int i = _allItems.indexOf(item);
               if (!item.read) {
-                item.read = true;
-                _readItems.add(item);
-                _unreadItems.remove(item);
+                _allItems[i].read = true;
               } else {
-                item.read = false;
-                _unreadItems.add(item);
-                _readItems.remove(item);
+                _allItems[i].read = false;
               }
             });
           },
