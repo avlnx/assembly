@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'placeholder_widget.dart';
 import 'screens/settings_screen.dart';
 import 'tabs/mural_tab.dart';
 import 'tabs/results_tab.dart';
+import 'tabs/votes_tab.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     MuralTab(),
-    PlaceholderWidget('Votações'),
+    VotesTab(),
     ResultsTab(),
   ];
 
