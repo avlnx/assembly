@@ -6,63 +6,92 @@ class VotesTab extends StatefulWidget {
   _VotesTabState createState() => _VotesTabState();
 }
 
-class Vote {
+class Question {
+  int id;
   String title;
   DateTime date;
+  List<Choice> choices;
 
-  Vote(this.title, this.date);
+  Question(this.id, this.title, this.date, this.choices);
+}
+
+class Choice {
+  String title;
+  int id;
+
+  Choice(this.title, this.id);
 }
 
 class _VotesTabState extends State<VotesTab> {
-  final _results = <Vote>[];
+  List<Question> _questions = <Question>[];
+  int _selected;
 
   @override
   void initState() {
-    // implement initState
+    // We will load one pending question at a time
     super.initState();
     // Create mock data
-    _results.addAll(List<Vote>.generate(
-        50, (i) => Vote("Votação #${Random().nextInt(1000)}", DateTime.now())));
+    _questions.add(
+      Question(1, 'Qual cor você gostaria que fosse pintado o prédio?',
+          DateTime.now(), [
+        Choice('Azul', 1),
+        Choice('Vermelho', 2),
+        Choice('Marrom', 3),
+        Choice('Bege', 4),
+        Choice('Roxo', 5),
+      ]),
+    );
+  }
+
+  Question getNextQuestion() {
+    return _questions.length > 0 ? _questions.first : null;
   }
 
   @override
   Widget build(BuildContext context) {
+    Question question = getNextQuestion();
+
     return Padding(
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Center(
-                child: Text(
-                  'Qual cor você gostaria que fosse pintado o prédio?',
-                  style: TextStyle(fontSize: 32.0, ),
-                ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            question.title,
+            style: TextStyle(
+              fontSize: 36.0,
+              color: Colors.white,
+            ),
+          ),
+          Expanded(
+            child: Card(
+              child: ListView.builder(
+                itemCount: question.choices.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      question.choices[index].title,
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    leading: Icon(
+                      index == _selected ? Icons.check_circle : Icons.radio_button_unchecked,
+                      size: 36.0,
+                      color: Colors.blueAccent,
+                    ),
+                    contentPadding: EdgeInsets.all(5.0),
+                    onTap: () {
+                      setState(() { _selected = index; });
+                    },
+                  );
+                },
               ),
+              margin: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
             ),
-            ListTile(
-              title: Text('Azul',
-              style: TextStyle(fontSize: 24.0),),
-              leading: Icon(Icons.radio_button_checked),
-            ),
-            ListTile(
-              title: Text('Vermelho',
-                style: TextStyle(fontSize: 24.0),),
-              leading: Icon(Icons.radio_button_unchecked),
-            ),
-            ListTile(
-              title: Text('Marrom',
-                style: TextStyle(fontSize: 24.0),),
-              leading: Icon(Icons.radio_button_unchecked),
-            ),
-            ListTile(
-              title: Text('Bege',
-                style: TextStyle(fontSize: 24.0),),
-              leading: Icon(Icons.radio_button_unchecked),
-            ),
-          ],
-        ),
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+          ),
+          RaisedButton(
+            child: Text('Confirmar'),
+            color: Theme.of(context).buttonColor,
+            onPressed: () {},
+          ),
+        ],
       ),
       padding: EdgeInsets.all(10.0),
     );

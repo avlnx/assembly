@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
           'Desenrola',
           style: TextStyle(
             fontFamily: 'Kaushan Script',
-            fontSize: 28.0,
+            fontSize: 24.0,
           ),
         ),
         actions: <Widget>[
