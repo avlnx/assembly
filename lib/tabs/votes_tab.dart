@@ -41,15 +41,50 @@ class _VotesTabState extends State<VotesTab> {
         Choice('Roxo', 5),
       ]),
     );
+    _questions.add(
+        Question(2, 'Você é a favor de trocar o síndico??',
+            DateTime.now(), [
+              Choice('Sim', 0),
+              Choice('Não', 1),
+            ])
+    );
   }
 
   Question getNextQuestion() {
     return _questions.length > 0 ? _questions.first : null;
   }
 
+  void confirmQuestionsChoice() {
+    // Remove the answered question from the queue
+    Question question;
+    question = _questions.removeAt(0);
+    Choice choice = question.choices[_selected];
+    // Update interface
+    setState(() {
+      _selected = null;
+    });
+
+    // TODO: save questions choice in backend
+    // carry on
+  }
+
   @override
   Widget build(BuildContext context) {
     Question question = getNextQuestion();
+
+    if (question == null) {
+      // Done
+      return Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Center(
+          child: Text(
+            'Você não tem votações pendentes :)',
+            style: TextStyle(color: Colors.white, fontSize: 48.0),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
 
     return Padding(
       child: Column(
@@ -63,8 +98,9 @@ class _VotesTabState extends State<VotesTab> {
           ),
           Expanded(
             child: Card(
-              child: ListView.builder(
+              child: ListView.separated(
                 itemCount: question.choices.length,
+                separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(
@@ -72,13 +108,17 @@ class _VotesTabState extends State<VotesTab> {
                       style: TextStyle(fontSize: 20.0),
                     ),
                     leading: Icon(
-                      index == _selected ? Icons.check_circle : Icons.radio_button_unchecked,
+                      index == _selected
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
                       size: 36.0,
                       color: Colors.blueAccent,
                     ),
-                    contentPadding: EdgeInsets.all(5.0),
+                    contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                     onTap: () {
-                      setState(() { _selected = index; });
+                      setState(() {
+                        _selected = index;
+                      });
                     },
                   );
                 },
@@ -89,7 +129,7 @@ class _VotesTabState extends State<VotesTab> {
           RaisedButton(
             child: Text('Confirmar'),
             color: Theme.of(context).buttonColor,
-            onPressed: () {},
+            onPressed: confirmQuestionsChoice,
           ),
         ],
       ),
