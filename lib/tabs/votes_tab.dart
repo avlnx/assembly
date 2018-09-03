@@ -42,7 +42,7 @@ class _VotesTabState extends State<VotesTab> {
       ]),
     );
     _questions.add(
-        Question(2, 'Você é a favor de trocar o síndico??',
+        Question(2, 'Você é a favor de trocar o síndico?',
             DateTime.now(), [
               Choice('Sim', 0),
               Choice('Não', 1),
@@ -112,7 +112,7 @@ class _VotesTabState extends State<VotesTab> {
                           ? Icons.check_circle
                           : Icons.radio_button_unchecked,
                       size: 36.0,
-                      color: Colors.blueAccent,
+                      color: Theme.of(context).accentColor,
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                     onTap: () {
@@ -128,10 +128,10 @@ class _VotesTabState extends State<VotesTab> {
           ),
           RaisedButton(
             child: Text('Confirmar'),
-            color: Theme.of(context).buttonColor,
             onPressed: confirmQuestionsChoice,
           ),
         ],
+        crossAxisAlignment: CrossAxisAlignment.stretch,
       ),
       padding: EdgeInsets.all(10.0),
     );

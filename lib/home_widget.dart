@@ -24,13 +24,14 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: Text(
+        title: Center(
+            child: Text(
           'Desenrola',
           style: TextStyle(
             fontFamily: 'Kaushan Script',
             fontSize: 24.0,
           ),
-        ),
+        )),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),

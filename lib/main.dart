@@ -7,11 +7,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Flutter App',
+      title: 'Desenrola',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         primaryColor: Colors.deepPurple,
         scaffoldBackgroundColor: Colors.deepPurple,
+        accentColor: Colors.deepOrange,
+        buttonColor: Colors.deepOrange,
       ),
       home: Home(),
     );
