@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import '../screens/result_details_screen.dart';
+import '../helper.dart';
 
 class ResultsTab extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _ResultsTabState extends State<ResultsTab> {
       itemCount: _results.length,
       itemBuilder: (context, index) {
         DateTime date = _results[index].date;
-        String dateSlug ="${date.day.toString().padLeft(2,'0')}/${date.month.toString().padLeft(2,'0')}/${date.year.toString()}";
+        String dateSlug = Helper.getFormattedDate(date);
 
         return Card(
           child: ListTile(
