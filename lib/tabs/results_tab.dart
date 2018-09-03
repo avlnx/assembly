@@ -31,13 +31,18 @@ class _ResultsTabState extends State<ResultsTab> {
     return ListView.builder(
       itemCount: _results.length,
       itemBuilder: (context, index) {
+        DateTime date = _results[index].date;
+        String dateSlug ="${date.day.toString().padLeft(2,'0')}/${date.month.toString().padLeft(2,'0')}/${date.year.toString()}";
+
         return Card(
           child: ListTile(
             title: Text(
               _results[index].title,
               style: TextStyle(fontSize: 18.0),
             ),
-            subtitle: Text(_results[index].date.toLocal().toString()),
+            subtitle: Text(
+              dateSlug,
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -50,7 +55,7 @@ class _ResultsTabState extends State<ResultsTab> {
           margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
         );
       },
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(10.0),
     );
   }
 }
