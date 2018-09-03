@@ -42,12 +42,10 @@ class _VotesTabState extends State<VotesTab> {
       ]),
     );
     _questions.add(
-        Question(2, 'Você é a favor de trocar o síndico?',
-            DateTime.now(), [
-              Choice('Sim', 0),
-              Choice('Não', 1),
-            ])
-    );
+        Question(2, 'Você é a favor de trocar o síndico?', DateTime.now(), [
+      Choice('Sim', 0),
+      Choice('Não', 1),
+    ]));
   }
 
   Question getNextQuestion() {
@@ -127,8 +125,29 @@ class _VotesTabState extends State<VotesTab> {
             ),
           ),
           RaisedButton(
-            child: Text('Confirmar'),
+            child: ListTile(
+              title: Text(
+                'Confirmar',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              trailing: Icon(Icons.forward),
+            ),
             onPressed: confirmQuestionsChoice,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+            child: Text(
+              'Encerra em 9 dias',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.0,
+              ),
+            ),
           ),
         ],
         crossAxisAlignment: CrossAxisAlignment.stretch,
